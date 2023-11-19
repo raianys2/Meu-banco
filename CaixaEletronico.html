@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Meu Banco</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    
+    <body>
+        <header>
+            <h1>Meu Banco</h1>
+        </header>
+    
+        <main>
+           
+            <div class="container">
+                <p>O Meu Banco nasceu de um projeto do Instituto Proa por solicitação do Prof. Gabriel. Desenvolvido por Raiany Santana, é uma plataforma amigável que busca simplificar suas operações financeiras de forma prática e eficiente.</p>
+                <button onclick="inicio()">Iniciar</button>
+            </div>
+        </body>
+
+
+
+        
+    <script>
+        var saldo = 100.5;
+var extrato = []; 
+var senhaCorreta = '3589';
+var nomeUsuario = '';
+
+function inicio() {
+    var nome = prompt('Digite seu nome:'); 
+    nomeUsuario = nome;
+    alert('Olá ' + nome + ', Seja bem-vindo! \nÉ um prazer tê-lo por aqui!');
+    solicitarSenha();
+}
+
+function solicitarSenha() {
+    var senha = prompt('Digite sua senha:');
+    validarSenhaLoop(senha);
+}
+
+function validarSenhaLoop(senha) {
+    if (validarSenha(senha)) {
+        operacoesComSenha();
+    } else {
+        alert('Senha incorreta. Tente novamente.');
+        confirmarSenha(operacoesComSenha);
+    }
+}
+
+function operacoesComSenha() {
+    var escolha = parseInt(prompt('Selecione uma opção: \n1.) Saldo \n2.) Extrato \n3.) Saque \n4.) Depósito \n5.) Transferência \n6.) Sair'));
+
+    switch (escolha) {
+        case 1:
+            confirmarSenha(ver_saldo);
+            break;
+        case 2:
+            confirmarSenha(ver_extrato);
+            break;
+        case 3:
+            confirmarSenha(fazer_saque);
+            break;
+        case 4:
+            confirmarSenha(fazer_deposito);
+            break;
+        case 5:
+            confirmarSenha(fazer_transferencia);
+            break;
+        case 6:
+            sair();
+            break;
+        default:
+            erro();
+    }
+}
+
+function validarSenha(senha) {
+    return senha === senhaCorreta;
+}
+
+function confirmarSenha(funcao) {
+    var senha = prompt('Confirme sua senha para continuar:');
+    if (validarSenha(senha)) {
+        funcao();
+    } else {
+        alert('Senha incorreta. Tente novamente.');
+        confirmarSenha(funcao);
+    }
+}
+
+function novaOperacaoOuSair() {
+    var escolha = parseInt(prompt('Deseja realizar uma nova operação?\n1. Sim\n2. Sair'));
+
+    switch (escolha) {
+        case 1:
+            inicio();
+            break;
+        case 2:
+            sair();
+            break;
+        default:
+            novaOperacaoOuSair();
+            break;
+    }
+}
+
+function ver_saldo() {
+    alert('Seu saldo atual é: ' + saldo);
+    novaOperacaoOuSair();
+}
+
+function fazer_deposito() {
+    var deposito = parseFloat(prompt('Qual o valor para depósito?'));
+
+    if (isNaN(deposito) || deposito <= 0 || deposito === '') {
+        alert('Operação não autorizada. Valor inválido.');
+    } else {
+        saldo += deposito;
+        extrato.push("Depósito de: " + deposito);
+        novaOperacaoOuSair();
+    }
+}
+
+function fazer_saque() {
+    var saque = parseFloat(prompt('Qual o valor para saque?'));
+
+    if (isNaN(saque) || saque <= 0 || saque === '') {
+        alert('Operação não autorizada. Valor inválido.');
+    } else if (saque > saldo) {
+        alert('Operação não autorizada. Saldo insuficiente.');
+    } else {
+        saldo -= saque;
+        extrato.push("Saque de: R$ " + saque);
+        novaOperacaoOuSair();
+    }
+}
+
+function fazer_transferencia() {
+    var conta = prompt('Informe o número da conta para transferência:');
+    var valorTransferencia = parseFloat(prompt('Qual o valor para transferência?'));
+
+    if (isNaN(valorTransferencia) || valorTransferencia <= 0 || valorTransferencia === '') {
+        alert('Operação não autorizada. Valor inválido.');
+    } else if (valorTransferencia > saldo) {
+        alert('Operação não autorizada. Saldo insuficiente.');
+    } else {
+        saldo -= valorTransferencia;
+        extrato.push("Transferência de: R$ " + valorTransferencia + " para a conta: " + conta);
+        novaOperacaoOuSair();
+    }
+}
+
+function ver_extrato() {
+    extrato.push("Compra de R$50.00 no Shopping em 10/11/2023");
+    extrato.push("Compra de R$30.00 no Supermercado em 08/11/2023");
+    extrato.push("Pagamento de R$20.00 de Conta de Luz em 07/11/2023");
+    extrato.push("Depósito de R$100.00 recebido em 05/11/2023");
+
+    var extratoTexto = "Extrato:\n";
+    for (var i = 0; i < extrato.length; i++) {
+        extratoTexto += extrato[i] + "\n";
+    }
+
+    alert(extratoTexto);
+    novaOperacaoOuSair();
+}
+
+function erro() {
+    alert('Por favor, informe um número entre 1 e 6 para selecionar uma opção válida.');
+    inicio();
+}
+
+function sair() {
+    var confirma = confirm('Você deseja sair?');
+    if (confirma) {
+        alert(nomeUsuario + ', foi um prazer ter você por aqui!');
+        window.close();
+    } else {
+        inicio();
+    }
+}
+
+    </script>
+
+
+</html>
